@@ -1,0 +1,152 @@
+;PALASM Design Description
+;---------------------------------- Declaration Segment ------------
+TITLE    Project X65 Address Decoding and Bus Timing Control
+PATTERN  
+REVISION A01
+AUTHOR   Calle Englund
+COMPANY  
+DATE     04/25/20
+
+CHIP  _BusCon  PAL22V10
+
+;---------------------------------- PIN Declarations ---------------
+PIN  1          QPHI3           ; I - Quad bus clock phase 3 / CPU PHI2
+PIN  2          /BANK0          ; I - $00xxxx selection
+PIN  3..6       A[15..12]       ; I - Address lines & #h00F000
+PIN  7          A[11]           ; I - Address lines & #h000800
+PIN  8          A[7]            ; I - Address lines & #h000080
+PIN  9          VDA             ; I - Valid data address
+PIN  10         VPA             ; I - Valid program address
+PIN  11         /ML             ; I - Memory Lock (Read-Modify-Write)
+PIN  12         GND             ; Power 
+PIN  13         R_W             ; I - Read /Write
+PIN  14         /WAIT           ; I - Bus device wait state
+PIN  15         BE              ; I - CPU bus enabled
+
+PIN  17         /DBUS           ; O - CPU data bus active
+PIN  18         /RAMCS          ; O - RAM chip select
+PIN  19         /ROMCS          ; O - ROM chip select
+PIN  20         /IOCS           ; O - I/O region chip select
+PIN  21         /READ           ; O - Read data strobe
+PIN  22         /WRITE          ; O - Write data strobe
+PIN  23         /BUSRQ          ; O - Bus request
+PIN  24         VCC             ; Power
+
+;----------------------------------- Boolean Equation Segment ------
+EQUATIONS
+
+; 65816 requests the bus during Valid Address and /ML cycles
+; Meaning that internal cycles can be used by other devices
+
+BUSRQ = VDA + VPA + ML
+BUSRQ.TRST = /BE
+
+; 65816 multiplexed bank address and data bus, with data bus
+; active during PHI2 (and wait states)
+
+DBUS = BUSRQ * (QPHI3 + WAIT)
+DBUS.TRST = /BE
+
+; Issue read requests as early as possible
+
+READ = BUSRQ * R_W
+READ.TRST = /BE
+
+; Write requests must wait for data bus demultiplexing
+
+WRITE = DBUS * /R_W
+WRITE.TRST = /BE
+
+; 8 KB ROM $00E000 - $00FFFF
+
+ROMCS = BANK0 * A[15] * A[14] * A[13]
+ROMCS.TRST = /BE
+
+; 8 I/O pages $D800 - $DFFF:
+; Page I/O chip selection A[10..8] via external logic
+; 128 B RAM $00 - $7F
+; 128 B I/O $80 - $FF
+; This layout gives a device driver access to both RAM and I/O
+; in its direct page for convenient addressing from non-BANK0.
+
+IOCS = BANK0 * A[15] * A[14] * /A[13] * A[12] * A[11] * A[7]
+IOCS.TRST = /BE
+
+; 54 KB BANK0 RAM $000000 - $00D7FF
+; Everything that's not ROM nor IO is RAM
+
+RAMCS = /(ROMCS + IOCS)
+RAMCS.TRST = /BE
+
+;----------------------------------- Simulation Segment ------------
+SIMULATION
+
+TRACE_ON QPHI3 /WAIT R_W VPA VDA /ML /DBUS /READ /WRITE /RAMCS /IOCS /ROMCS A[15..12] A[11] A[7]
+
+SETF /ML R_W /VDA /VPA BANK0 QPHI3 /WAIT
+
+SETF /QPHI3
+SETF /R_W VDA /VPA /A[15..12]
+SETF QPHI3
+SETF WAIT
+
+SETF /QPHI3
+SETF
+SETF QPHI3
+SETF /WAIT
+
+SETF /QPHI3
+SETF /R_W VDA /VPA /A[15..12]
+SETF QPHI3
+SETF
+
+SETF /QPHI3
+SETF /R_W VDA /VPA/A[15..12]
+SETF QPHI3
+SETF
+
+SETF /QPHI3
+SETF R_W VDA /VPA A[15..11] A[7]
+SETF QPHI3
+SETF
+
+SETF /QPHI3
+SETF R_W VDA A[15..11] A[7]
+SETF QPHI3
+SETF
+
+SETF /QPHI3
+SETF R_W VPA VDA A[15..13] /A[12..11] /A[7]
+SETF QPHI3
+SETF
+
+SETF /QPHI3
+SETF R_W VPA /VDA A[15..13] /A[12..11] /A[7]
+SETF QPHI3
+SETF
+
+SETF /QPHI3
+SETF R_W /VPA VDA ML A[15..14] /A[13] A[12..11] A[7]
+SETF QPHI3
+SETF
+
+SETF /QPHI3
+SETF /VDA
+SETF QPHI3
+SETF
+
+SETF /QPHI3
+SETF /R_W /VPA VDA ML A[15..14] /A[13] A[12..11] A[7]
+SETF QPHI3
+SETF
+
+SETF /QPHI3
+SETF R_W /VPA /VDA /ML
+SETF QPHI3
+SETF
+
+SETF /QPHI3
+
+TRACE_OFF
+
+;-------------------------------------------------------------------

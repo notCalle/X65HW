@@ -1,0 +1,212 @@
+Banksy.pds
+
+PALASM4  PARSER   - MARKET RELEASE 1.5 (7-10-92)
+ (C) - COPYRIGHT ADVANCED MICRO DEVICES INC., 1992
+
+
+                    ***********************************
+                    *     PALASM PARSER LISTING       *
+                    ***********************************
+
+LINE #   |----+----1----+----2----+----3----+----4----+----5----+----6----+
+   1     |;PALASM Design Description
+   2     |
+   3     |;---------------------------------- Declaration Segment ------------
+   4     |TITLE    Project X65 Bank Address Demultiplex and Zero Detect
+   5     |PATTERN  
+   6     |REVISION A01
+   7     |AUTHOR   Calle Englund
+   8     |COMPANY  
+   9     |DATE     04/27/20
+  10     |
+  11     |CHIP  _BANKSY  PAL22V10
+  12     |
+  13     |;---------------------------------- PIN Declarations ---------------
+  14     |PIN  1          QPHI2           ; I - Quad bus clock phase 2
+  15     |PIN  2          QPHI3           ; I - Quad bus clock phase 3 / CPU PHI2
+  16     |PIN  3..10      DA[0..7]        ; I - D[0..7]/A[16..23] multiplex
+  17     |PIN  11         BE              ; I - Bus enable
+  18     |PIN  13         /WAIT           ; I - Bus wait state
+  19     |PIN  15         /BANK0          ; O - A[23..16] = #h00
+  20     |PIN  16..23     A[16..23]       ; O - A[16..23] demultiplexed
+  21     |
+  22     |STRING A23 'DA[7]'
+  23     |STRING A22 'DA[6]'
+  24     |STRING A21 'DA[5]'
+  25     |STRING A20 'DA[4]'
+  26     |STRING A19 'DA[3]'
+  27     |STRING A18 'DA[2]'
+  28     |STRING A17 'DA[1]'
+  29     |STRING A16 'DA[0]'
+  30     |
+  31     |STRING DA00 '(/A23 * /A22 * /A21 * /A20 * /A19 * /A18 * /A17 * /A16)'
+  32     |
+  33     |; Hold demultuplexed A[16..23] during the last 3 quarters of CPU clock
+  34     |; and during wait states
+  35     |STRING HOLD '(QPHI2 + QPHI3 + WAIT)'
+  36     |
+  37     |;----------------------------------- Boolean Equation Segment ------
+  38     |EQUATIONS
+  39     |
+  40     |; Demultiplex A[16..23] during first half of CPU PHI1, then hold the
+  41     |; state for the rest of the clock cycle, and during wait states.
+  42     |
+  43     |A[16..23] =  
+  43  s1 |(QPHI2 + QPHI3 + WAIT)
+  43     |                  * A[16..23] + / 
+  43  s1 |(QPHI2 + QPHI3 + WAIT)
+  43     |                                       * DA[0..7]
+  44     |A[16..23].TRST = /BE
+  45     |
+  46     |BANK0 =  
+  46  s1 |(QPHI2 + QPHI3 + WAIT)
+  46     |              * BANK0 + / 
+  46  s1 |(QPHI2 + QPHI3 + WAIT)
+  46     |                               *  
+  46  s1 |(/ 
+  46  s2 |DA[7]
+  46  s1 |       * / 
+  46  s2 |DA[6]
+  46  s1 |               * / 
+  46  s2 |DA[5]
+  46  s1 |                       * / 
+  46  s2 |DA[4]
+  46  s1 |                               * / 
+  46  s2 |DA[3]
+  46  s1 |                                       * / 
+  46  s2 |DA[2]
+  46  s1 |                                               * / 
+  46  s2 |DA[1]
+  46  s1 |                                                       * / 
+  46  s2 |DA[0]
+  46  s1 |                                                              )
+  46     |
+  47     |BANK0.TRST = /BE
+  48     |
+  49     |;----------------------------------- Simulation Segment ------------
+  50     |SIMULATION
+  51     |
+  52     |TRACE_ON QPHI3 DA[0..7] /BANK0 A[16..23]
+  53     |
+  54     |SETF QPHI3 /QPHI2 DA[0..7]
+  55     |
+  56     |SETF /QPHI3
+  57     |SETF QPHI2 /DA[7..0]
+  58     |SETF QPHI3
+  59     |SETF /QPHI2 DA[7..0]
+  60     |
+  61     |SETF /QPHI3
+  62     |SETF QPHI2 /DA[7..0]
+  63     |SETF QPHI3 DA[7..0]
+  64     |SETF /QPHI2
+  65     |
+  66     |SETF /QPHI3
+  67     |
+  68     |TRACE_OFF
+  69     |;-------------------------------------------------------------------
+
+ %% PARSE %%    No errors.  No warnings.
+
+ %% PARSE %%    File processed successfully.    File:  Banksy.pds
+PALASM4  BPP   - MARKET RELEASE 1.5 (7-10-92)
+ (C) - COPYRIGHT ADVANCED MICRO DEVICES INC., 1992
+
+EQUATIONS SEGMENT
+Processing equation for ====>A[16..23]
+Processing equation for ====>A[16..23].TRST
+Processing equation for ====>BANK0
+Processing equation for ====>BANK0.TRST
+SIMULATION SEGMENT
+............
+ %%  BPP  %% Maximum memory allocated was: 20420 bytes.
+
+ %%  BPP  %% File Processed Successfully.  File: Banksy.pds.
+ %%  BPP  %% ERROR count: 0  WARNING count: 0
+PALASM4  MINIMIZE   - MARKET RELEASE 1.5 (7-10-92)
+ (C) - COPYRIGHT ADVANCED MICRO DEVICES INC., 1992
+
+..................
+
+
+Processing equation ====> A[23]               MINIMIZE_ON  (4 pt ---> 4 pt)
+Processing equation ====> A[23].TRST          MINIMIZE_ON  (1 pt ---> 1 pt)
+Processing equation ====> A[22]               MINIMIZE_ON  (4 pt ---> 4 pt)
+Processing equation ====> A[22].TRST          MINIMIZE_ON  (1 pt ---> 1 pt)
+Processing equation ====> A[21]               MINIMIZE_ON  (4 pt ---> 4 pt)
+Processing equation ====> A[21].TRST          MINIMIZE_ON  (1 pt ---> 1 pt)
+Processing equation ====> A[20]               MINIMIZE_ON  (4 pt ---> 4 pt)
+Processing equation ====> A[20].TRST          MINIMIZE_ON  (1 pt ---> 1 pt)
+Processing equation ====> A[19]               MINIMIZE_ON  (4 pt ---> 4 pt)
+Processing equation ====> A[19].TRST          MINIMIZE_ON  (1 pt ---> 1 pt)
+Processing equation ====> A[18]               MINIMIZE_ON  (4 pt ---> 4 pt)
+Processing equation ====> A[18].TRST          MINIMIZE_ON  (1 pt ---> 1 pt)
+Processing equation ====> A[17]               MINIMIZE_ON  (4 pt ---> 4 pt)
+Processing equation ====> A[17].TRST          MINIMIZE_ON  (1 pt ---> 1 pt)
+Processing equation ====> A[16]               MINIMIZE_ON  (4 pt ---> 4 pt)
+Processing equation ====> A[16].TRST          MINIMIZE_ON  (1 pt ---> 1 pt)
+Processing equation ====> BANK0               MINIMIZE_ON  (4 pt ---> 4 pt)
+Processing equation ====> BANK0.TRST          MINIMIZE_ON  (1 pt ---> 1 pt)
+
+ %%  MINIMIZE  %% Maximum memory allocated was: 8246 bytes.
+
+ %%  MINIMIZE  %% File Processed Successfully.  File: Banksy.pds.
+ %%  MINIMIZE  %% ERROR count: 0  WARNING count: 0
+
+PALASM4  PAL ASSEMBLER   - MARKET RELEASE 1.5a (8-20-92)
+ (C) - COPYRIGHT ADVANCED MICRO DEVICES INC., 1992
+
+FILE  Banksy.pds
+TITLE  Project X65 Bank Address Demultiplex and Zero Detect
+Equation being processed for output ==>>  BANK0
+Equation being processed for output ==>> BANK0.TRST
+Equation being processed for output ==>>  A[16]
+Equation being processed for output ==>> A[16].TRST
+Equation being processed for output ==>>  A[17]
+Equation being processed for output ==>> A[17].TRST
+Equation being processed for output ==>>  A[18]
+Equation being processed for output ==>> A[18].TRST
+Equation being processed for output ==>>  A[19]
+Equation being processed for output ==>> A[19].TRST
+Equation being processed for output ==>>  A[20]
+Equation being processed for output ==>> A[20].TRST
+Equation being processed for output ==>>  A[21]
+Equation being processed for output ==>> A[21].TRST
+Equation being processed for output ==>>  A[22]
+Equation being processed for output ==>> A[22].TRST
+Equation being processed for output ==>>  A[23]
+Equation being processed for output ==>> A[23].TRST
+The fuse plot is stored in ===>Banksy.XPT
+The JEDEC is stored in ===>Banksy.JED
+
+ %%  PAL ASSEMBLER  %% Maximum memory allocated was: 18874 bytes.
+
+ %%  PAL ASSEMBLER  %% File Processed Successfully.  File: Banksy.pds.
+ %%  PAL ASSEMBLER  %% ERROR count: 0  WARNING count: 0
+PALASM4  PLDSIM   - MARKET RELEASE 1.5 (7-10-92)
+ (C) - COPYRIGHT ADVANCED MICRO DEVICES INC., 1992
+
+File  Banksy.pds
+Title  Project X65 Bank Address Demultiplex and Zero Detect
+
+   1 - TRACE_ON
+   1 - SETF
+   2 - SETF
+   3 - SETF
+   4 - SETF
+   5 - SETF
+   6 - SETF
+   7 - SETF
+   8 - SETF
+   9 - SETF
+  10 - SETF
+  11 - TRACE_OFF
+
+   END OF SIMULATION
+Simulation results (history) are in ===> Banksy.HST
+Simulation results (trace) are in   ===> Banksy.TRF
+Merged results (JEDEC) are in       ===> Banksy.JDC
+
+ %%  PLDSIM  %% Maximum memory allocated was: 23148 bytes.
+
+ %%  PLDSIM  %% File Processed Successfully.  File: Banksy.pds.
+ %%  PLDSIM  %% ERROR count: 0  WARNING count: 0

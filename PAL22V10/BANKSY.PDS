@@ -1,0 +1,69 @@
+;PALASM Design Description
+
+;---------------------------------- Declaration Segment ------------
+TITLE    Project X65 Bank Address Demultiplex and Zero Detect
+PATTERN  
+REVISION A01
+AUTHOR   Calle Englund
+COMPANY  
+DATE     04/27/20
+
+CHIP  _BANKSY  PAL22V10
+
+;---------------------------------- PIN Declarations ---------------
+PIN  1          QPHI2           ; I - Quad bus clock phase 2
+PIN  2          QPHI3           ; I - Quad bus clock phase 3 / CPU PHI2
+PIN  3..10      DA[0..7]        ; I - D[0..7]/A[16..23] multiplex
+PIN  11         BE              ; I - Bus enable
+PIN  13         /WAIT           ; I - Bus wait state
+PIN  15         /BANK0          ; O - A[23..16] = #h00
+PIN  16..23     A[16..23]       ; O - A[16..23] demultiplexed
+
+STRING A23 'DA[7]'
+STRING A22 'DA[6]'
+STRING A21 'DA[5]'
+STRING A20 'DA[4]'
+STRING A19 'DA[3]'
+STRING A18 'DA[2]'
+STRING A17 'DA[1]'
+STRING A16 'DA[0]'
+
+STRING DA00 '(/A23 * /A22 * /A21 * /A20 * /A19 * /A18 * /A17 * /A16)'
+
+; Hold demultuplexed A[16..23] during the last 3 quarters of CPU clock
+; and during wait states
+STRING HOLD '(QPHI2 + QPHI3 + WAIT)'
+
+;----------------------------------- Boolean Equation Segment ------
+EQUATIONS
+
+; Demultiplex A[16..23] during first half of CPU PHI1, then hold the
+; state for the rest of the clock cycle, and during wait states.
+
+A[16..23] = HOLD * A[16..23] + /HOLD * DA[0..7]
+A[16..23].TRST = /BE
+
+BANK0 = HOLD * BANK0 + /HOLD * DA00
+BANK0.TRST = /BE
+
+;----------------------------------- Simulation Segment ------------
+SIMULATION
+
+TRACE_ON QPHI3 DA[0..7] /BANK0 A[16..23]
+
+SETF QPHI3 /QPHI2 DA[0..7]
+
+SETF /QPHI3
+SETF QPHI2 /DA[7..0]
+SETF QPHI3
+SETF /QPHI2 DA[7..0]
+
+SETF /QPHI3
+SETF QPHI2 /DA[7..0]
+SETF QPHI3 DA[7..0]
+SETF /QPHI2
+
+SETF /QPHI3
+
+TRACE_OFF
+;-------------------------------------------------------------------

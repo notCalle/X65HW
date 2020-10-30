@@ -1,0 +1,83 @@
+;PALASM Design Description
+
+;---------------------------------- Declaration Segment ------------
+TITLE    Bus Clock Generator
+PATTERN  
+REVISION A01
+AUTHOR   Calle Englund
+COMPANY  
+DATE     04/26/20
+
+CHIP  ClockGen  PAL22V10
+
+;---------------------------------- PIN Declarations ---------------
+PIN  1          CLOCK           ; I - Master clock @ 4x bus clock      
+PIN  2          /RESET          ; I - System reset
+PIN  3..6       /T[3..0]        ; I - # of wait states
+PIN  7          /WAIT           ; I - Insert wait states
+PIN 14          RDY             ; O - Device ready signal to CPU
+PIN 15          QPHI            ; N/C scratch signal
+PIN 16..19      Q[0..3]         ; N/C scratch counter
+PIN 20..23      PHI[0..3]       ; O - Quad phase bus clock
+
+STRING PHI_Q0 '(PHI[3] * PHI[0])'
+STRING PHI_Q1 '(PHI[0] * PHI[1])'
+STRING PHI_Q2 '(PHI[1] * PHI[2])'
+STRING PHI_Q3 '(PHI[2] * PHI[3])'
+
+STRING PHIQ 'PHI[2]'
+STRING CNT '((/QPHI * PHIQ) * /RDY)'
+
+STRING Q0 '(/CNT + Q[0])'
+STRING Q0_1 '(Q0 + Q[1])'
+STRING Q0_2 '(Q0_1 + Q[2])'
+STRING Q0_3 '(Q0_2 + Q[3])'
+
+;----------------------------------- Boolean Equation Segment ------
+EQUATIONS
+
+PHI[0] := PHI[3] * /RESET
+PHI[1] := PHI[0] * /RESET
+PHI[2] := PHI[1] +  RESET
+PHI[3] := PHI[2] +  RESET
+QPHI := PHIQ
+
+RDY = RDY * /PHI_Q0 + PHI_Q0 * /(Q[0] + Q[1] + Q[2] + Q[3])
+
+Q[0] := /RESET * (WAIT * T[0] + /WAIT *  (CNT  :+: Q[0]))
+Q[1] := /RESET * (WAIT * T[1] + /WAIT * /(Q0   :+: Q[1]))
+Q[2] := /RESET * (WAIT * T[2] + /WAIT * /(Q0_1 :+: Q[2]))
+Q[3] := /RESET * (WAIT * T[3] + /WAIT * /(Q0_2 :+: Q[3]))
+
+;----------------------------------- Simulation Segment ------------
+SIMULATION
+
+TRACE_ON CLOCK RESET PHI[0..3] /WAIT RDY Q[0..3] 
+
+SETF RESET /T[0..3] /WAIT
+CLOCKF
+SETF RESET
+CLOCKF
+SETF /RESET
+CLOCKF
+
+FOR i := 1 TO 2 DO
+BEGIN
+  SETF /RESET
+  CLOCKF
+END
+
+SETF T[1] WAIT
+CLOCKF
+FOR i := 1 TO 32 DO
+BEGIN
+  SETF T[1] /WAIT
+  CLOCKF
+END
+
+SETF /T[1]
+CLOCKF
+
+TRACE_OFF
+
+;-------------------------------------------------------------------

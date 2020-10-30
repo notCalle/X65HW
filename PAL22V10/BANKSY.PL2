@@ -1,0 +1,88 @@
+TITLE FILE BANKSY.JED DIS-ASSEMBLED
+PATTERN 001
+REVISION 001
+AUTHOR VOLTAGE CONTROLLED COALITION
+COMPANY AMD, SANTA CLARA
+DATE 01-01-80
+
+CHIP DIS_ASM PAL22V10
+
+PIN 1 CLK
+PIN 2 I2
+PIN 3 I3
+PIN 4 I4
+PIN 5 I5
+PIN 6 I6
+PIN 7 I7
+PIN 8 I8
+PIN 9 I9
+PIN 10 I10
+PIN 11 I11
+PIN 12 GND
+PIN 13 I13
+PIN 14 R14
+PIN 15 R15
+PIN 16 R16
+PIN 17 R17
+PIN 18 R18
+PIN 19 R19
+PIN 20 R20
+PIN 21 R21
+PIN 22 R22
+PIN 23 R23
+PIN 24 VCC
+NODE 1 O25
+
+EQUATIONS
+
+  R23.TRST = /I10
+
+  R23:=  R23 * /I11
+      +   I5 *  I11
+
+  R22.TRST = /I10
+
+  R22:=  R22 * /I11
+      +   I6 *  I11
+
+  R21.TRST = /I10
+
+  R21:=  R21 * /I11
+      +   I7 *  I11
+
+  R20.TRST = /I10
+
+  R20:=  R20 * /I11
+      +   I8 *  I11
+
+  R19.TRST = /I10
+
+  R19:=  R19 * /I11
+      +   I9 *  I11
+
+  R18.TRST = /I10
+
+ /R18:= /R18 * /I11
+      + /I2 *   I3 *   I4 *  I11
+
+  R17.TRST = /I10
+
+ /R17:= /R17 * /I11
+      + /I2 *   I3 * /I4 *  I11
+
+  R16.TRST = /I10
+
+ /R16:= /R16 * /I11
+      + /I2 * /I3 *   I4 *  I11
+
+  R15.TRST = /I10
+
+ /R15:= /R15 * /I11
+      + /I2 * /I3 * /I4 *  I11
+
+  R14.TRST = /I10
+
+ /R14:= /R14 * /I11
+      + /I2 * /I3 * /I4 * /I5 * /I6 * /I7 * /I8 * /I9 *
+         I11
+

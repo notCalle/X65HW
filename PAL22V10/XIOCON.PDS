@@ -1,0 +1,54 @@
+;PALASM Design Description
+
+;---------------------------------- Declaration Segment ------------
+TITLE    Projext X65 Expanded I/O Controller
+PATTERN  
+REVISION A01
+AUTHOR   Calle Englund
+COMPANY  
+DATE     05/02/20
+
+CHIP  _XIOCON  PAL22V10
+
+;---------------------------------- PIN Declarations ---------------
+                        ; Slot 0 inputs
+PIN  2          /SLOT0
+PIN  3          /IRQ0
+PIN  4          /IOCS0
+                        ; Slot 1 inputs
+PIN  5          /SLOT1
+PIN  6          /IRQ1
+PIN  7          /IOCS1
+                        ; Slot 2 inputs
+PIN  8          /SLOT2
+PIN  9          /IRQ2
+PIN 10          /IOCS2
+                        ; Slot 3 inputs
+PIN 11          /SLOT3
+PIN 13          /IRQ3
+PIN 14          /IOCS3
+                        ; SLot 4 inputs
+PIN 15          /SLOT4
+PIN 16          /IRQ4
+PIN 17          /IOCS4
+                        ; Outputs
+PIN  22         /IRQ            ; O - Combined IRQ for all slots
+PIN  23         /ABRT           ; O - Selected slot not present
+
+;----------------------------------- Boolean Equation Segment ------
+EQUATIONS
+
+; Abort bus transaction to non-present I/O slot
+ABRT = IOCS0 * /SLOT0
+     + IOCS1 * /SLOT1
+     + IOCS2 * /SLOT2
+     + IOCS3 * /SLOT3
+     + IOCS4 * /SLOT4
+
+; Summarize slot IRQs
+IRQ = IRQ0 + IRQ1 + IRQ2 + IRQ3 + IRQ4
+
+;----------------------------------- Simulation Segment ------------
+SIMULATION
+
+;-------------------------------------------------------------------

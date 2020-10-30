@@ -1,0 +1,32 @@
+PALASM4  PLDSIM   - MARKET RELEASE 1.5 (7-10-92)
+ (C) - COPYRIGHT ADVANCED MICRO DEVICES INC., 1992
+
+PALASM SIMULATION SELECTIVE TRACE LISTING
+
+Title     : Project X65 Bank Address Author   : Calle Englund    
+Pattern   :                          Company  :                  
+Revision  : A01                      Date     : 04/27/20         
+
+PAL22V10       
+Page : 1 
+
+         gggggggggg                                                  
+ QPHI3   HLLHHLLHHL                                                  
+ DA[0]   HHLLHHLHHH                                                  
+ DA[1]   HHLLHHLHHH                                                  
+ DA[2]   HHLLHHLHHH                                                  
+ DA[3]   HHLLHHLHHH                                                  
+ DA[4]   HHLLHHLHHH                                                  
+ DA[5]   HHLLHHLHHH                                                  
+ DA[6]   HHLLHHLHHH                                                  
+ DA[7]   HHLLHHLHHH                                                  
+/BANK0   LLLLLLLLLL                                                  
+ A[16]   LLLLLLLLLL                                                  
+ A[17]   LLLLLLLLLL                                                  
+ A[18]   LLLLLLLLLL                                                  
+ A[19]   LLLLLLLLLL                                                  
+ A[20]   LLLLLLLLLL                                                  
+ A[21]   LLLLLLLLLL                                                  
+ A[22]   LLLLLLLLLL                                                  
+ A[23]   LLLLLLLLLL                                                  
+
