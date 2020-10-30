@@ -1,0 +1,19 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP BANKSY_PDIP
+D ATF22V10 for X65 Bank Address Demultiplex and Zero Detection
+$ENDCMP
+#
+$CMP BUSCON_PDIP
+D ATF22V10 in X65 Bus Controller configuration
+$ENDCMP
+#
+$CMP CLKGEN_PDIP
+D ATF22V10 in X65 Clock Generator configuration
+$ENDCMP
+#
+$CMP XIOCON_PDIP
+D ATF22V10 in X65 Expansion I/O Controller configuration
+$ENDCMP
+#
+#End Doc Library

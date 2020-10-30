@@ -1,0 +1,173 @@
+EESchema Schematic File Version 4
+EELAYER 30 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 5 11
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+Text HLabel 3300 4650 0    50   Input ~ 0
+~CS0
+Text HLabel 3300 4950 0    50   Input ~ 0
+SCLK
+Text HLabel 3300 4750 0    50   Input ~ 0
+MOSI
+Text HLabel 3300 5150 0    50   Output ~ 0
+MISO
+NoConn ~ 6800 5250
+Wire Wire Line
+	6800 5050 6300 5050
+Wire Wire Line
+	6300 5050 6300 5300
+$Comp
+L power:GNDD #PWR0502
+U 1 1 5F561FEF
+P 6300 5300
+F 0 "#PWR0502" H 6300 5050 50  0001 C CNN
+F 1 "GNDD" H 6304 5145 50  0000 C CNN
+F 2 "" H 6300 5300 50  0001 C CNN
+F 3 "" H 6300 5300 50  0001 C CNN
+	1    6300 5300
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6800 4850 6350 4850
+Wire Wire Line
+	6350 4850 6350 4350
+$Comp
+L power:+3V3 #PWR0504
+U 1 1 5F562668
+P 6350 4350
+F 0 "#PWR0504" H 6350 4200 50  0001 C CNN
+F 1 "+3V3" H 6365 4523 50  0000 C CNN
+F 2 "" H 6350 4350 50  0001 C CNN
+F 3 "" H 6350 4350 50  0001 C CNN
+	1    6350 4350
+	1    0    0    -1  
+$EndComp
+NoConn ~ 6800 4550
+$Comp
+L Connector:Micro_SD_Card J502
+U 1 1 5F562E26
+P 7700 4850
+F 0 "J502" H 7650 5567 50  0000 C CNN
+F 1 "Micro_SD_Card" H 7650 5476 50  0000 C CNN
+F 2 "" H 8850 5150 50  0001 C CNN
+F 3 "http://katalog.we-online.de/em/datasheet/693072010801.pdf" H 7700 4850 50  0001 C CNN
+	1    7700 4850
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GNDD #PWR0506
+U 1 1 5F5D4879
+P 8550 5550
+F 0 "#PWR0506" H 8550 5300 50  0001 C CNN
+F 1 "GNDD" H 8554 5395 50  0000 C CNN
+F 2 "" H 8550 5550 50  0001 C CNN
+F 3 "" H 8550 5550 50  0001 C CNN
+	1    8550 5550
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8550 5550 8550 5450
+Wire Wire Line
+	8550 5450 8500 5450
+Wire Wire Line
+	3300 5150 5750 5150
+Wire Wire Line
+	3300 4950 5600 4950
+Wire Wire Line
+	3300 4750 5450 4750
+Wire Wire Line
+	3300 4650 6800 4650
+NoConn ~ 6800 3500
+Wire Wire Line
+	6800 3300 6300 3300
+Wire Wire Line
+	6300 3300 6300 3550
+$Comp
+L power:GNDD #PWR0501
+U 1 1 5F79FEB1
+P 6300 3550
+F 0 "#PWR0501" H 6300 3300 50  0001 C CNN
+F 1 "GNDD" H 6304 3395 50  0000 C CNN
+F 2 "" H 6300 3550 50  0001 C CNN
+F 3 "" H 6300 3550 50  0001 C CNN
+	1    6300 3550
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6800 3100 6350 3100
+Wire Wire Line
+	6350 3100 6350 2600
+$Comp
+L power:+3V3 #PWR0503
+U 1 1 5F79FEB9
+P 6350 2600
+F 0 "#PWR0503" H 6350 2450 50  0001 C CNN
+F 1 "+3V3" H 6365 2773 50  0000 C CNN
+F 2 "" H 6350 2600 50  0001 C CNN
+F 3 "" H 6350 2600 50  0001 C CNN
+	1    6350 2600
+	1    0    0    -1  
+$EndComp
+NoConn ~ 6800 2800
+$Comp
+L Connector:Micro_SD_Card J501
+U 1 1 5F79FEC0
+P 7700 3100
+F 0 "J501" H 7650 3817 50  0000 C CNN
+F 1 "Micro_SD_Card" H 7650 3726 50  0000 C CNN
+F 2 "" H 8850 3400 50  0001 C CNN
+F 3 "http://katalog.we-online.de/em/datasheet/693072010801.pdf" H 7700 3100 50  0001 C CNN
+	1    7700 3100
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GNDD #PWR0505
+U 1 1 5F79FEC6
+P 8550 3800
+F 0 "#PWR0505" H 8550 3550 50  0001 C CNN
+F 1 "GNDD" H 8554 3645 50  0000 C CNN
+F 2 "" H 8550 3800 50  0001 C CNN
+F 3 "" H 8550 3800 50  0001 C CNN
+	1    8550 3800
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8550 3800 8550 3700
+Wire Wire Line
+	8550 3700 8500 3700
+Wire Wire Line
+	3300 2900 6800 2900
+Wire Wire Line
+	5750 3400 5750 5150
+Wire Wire Line
+	5750 3400 6800 3400
+Connection ~ 5750 5150
+Wire Wire Line
+	5750 5150 6800 5150
+Wire Wire Line
+	5600 3200 5600 4950
+Wire Wire Line
+	5600 3200 6800 3200
+Connection ~ 5600 4950
+Wire Wire Line
+	5600 4950 6800 4950
+Wire Wire Line
+	5450 3000 5450 4750
+Wire Wire Line
+	5450 3000 6800 3000
+Connection ~ 5450 4750
+Wire Wire Line
+	5450 4750 6800 4750
+Text HLabel 3300 2900 0    50   Input ~ 0
+~CS1
+$EndSCHEMATC

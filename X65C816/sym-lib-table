@@ -1,0 +1,4 @@
+(sym_lib_table
+  (lib (name CPU_WDC65C816)(type Legacy)(uri ${KIPRJMOD}/CPU_WDC65C816.lib)(options "")(descr ""))
+  (lib (name PAL22V10)(type Legacy)(uri ${KIPRJMOD}/PAL22V10.lib)(options "")(descr ""))
+)

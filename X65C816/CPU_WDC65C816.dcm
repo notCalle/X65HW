@@ -1,0 +1,9 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP W65C21S_PDIP
+D W65Cxx Peripheral Interface Adapter
+K WDC PIA
+F https://www.mouser.se/datasheet/2/436/w65c21-661.pdf
+$ENDCMP
+#
+#End Doc Library
