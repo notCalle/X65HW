@@ -1,3 +1,4 @@
 *.bck
 *-bak
 *.net
+*-backups/
